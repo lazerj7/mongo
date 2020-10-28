@@ -9,19 +9,13 @@ cache:
     - $TRAVIS_BUILD_DIR/build
 stages:
   - clean_cache
-  - get_dependencies
   - compile
   - test
 jobs:
   include:
     - stage: clean_cache
+      install: skip
       script: rm -rf $TRAVIS_BUILD_DIR/build/*
-    - stage: get_dependencies
-      before_script: sudo apt update
-      script:
-        - sudo apt install build-essential
-        - sudo apt install python2.7 libpython2.7-dev python-pip libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev
-      after_script: python2.7 -m pip install -r buildscripts/requirements.txt
     - stage: compile
       if: arch = arm64
       script:
@@ -40,7 +34,11 @@ jobs:
 #      env: OS_TYPE=centos OS_VERSION=8 OS_ARCH=x86_64
 #services:
 #  - docker
-#install:
+install:
+  - sudo apt update
+  - sudo apt install build-essential
+  - sudo apt install python2.7 libpython2.7-dev python-pip libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev
+  - python2.7 -m pip install -r buildscripts/requirements.txt
 #  - docker pull ${OS_TYPE}:${OS_VERSION}
 #  - docker run -d -i --name ctr -v ${PWD}:/sources -v ${PWD}:/output:Z ${OS_TYPE}:${OS_VERSION} /bin/bash
 #  - docker exec ctr dnf install -y gcc python27 boost-devel

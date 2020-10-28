@@ -7,6 +7,7 @@ cache:
 stages:
   - clean_cache
   - compile
+  - finish_compiling
   #- test
 jobs:
   include:
@@ -32,14 +33,10 @@ jobs:
       arch: arm64
       env: OS_ARCH=arm64
       script: python2.7 buildscripts/scons.py -j8 mongo --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
-    - stage: compile
+    - stage: finish_compiling
       arch: arm64
       env: OS_ARCH=arm64
-      script: python2.7 buildscripts/scons.py -j8 test --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
-    - stage: compile
-      arch: arm64
-      env: OS_ARCH=arm64
-      after_script: python2.7 buildscripts/scons.py -j8 all --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
+      script: python2.7 buildscripts/scons.py -j8 all --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
 #    - os: linux
 #      arch: arm64
 #      env: OS_TYPE=centos OS_VERSION=8 OS_ARCH=aarch64
@@ -55,11 +52,7 @@ jobs:
       arch: amd64
       env: OS_ARCH=amd64
       script: python2.7 buildscripts/scons.py -j8 mongo --disable-warnings-as-errors
-    - stage: compile
-      arch: amd64
-      env: OS_ARCH=amd64
-      script: python2.7 buildscripts/scons.py -j8 test --disable-warnings-as-errors
-    - stage: compile
+    - stage: finish_compiling
       arch: amd64
       env: OS_ARCH=amd64
       after_script: python2.7 buildscripts/scons.py -j8 all --disable-warnings-as-errors

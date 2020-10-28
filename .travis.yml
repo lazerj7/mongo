@@ -16,17 +16,14 @@ jobs:
       env: OS_TYPE=centos OS_VERSION=8 OS_ARCH=x86_64
 services:
   - docker
-before_install:
-  - docker pull ${OS_TYPE}:${OS_VERSION}
-  - docker run --name ctr -v ${PWD}:/sources -v ${PWD}:/output:Z ${OS_TYPE}:${OS_VERSION} /bin/bash
 install:
-  - docker exec ctr dnf install gcc python27 boost-devel
-  - docker exec ctr sudo dnf groupinstall "Development Tools" "Development Libraries"
-before_script:
-  - docker exec ctr python2.7 -m ensurepip && docker exec ctr python2.7 -m pip install -r buildscripts/requirements.txt
+  - docker pull ${OS_TYPE}:${OS_VERSION}
+  - docker run --name ctr -v ${PWD}:/sources -v ${PWD}:/output:Z ${OS_TYPE}:${OS_VERSION} dnf install gcc python27 boost-devel
+  - docker run --name ctr sudo dnf groupinstall "Development Tools" "Development Libraries"
+  - docker run --name ctr python2.7 -m ensurepip && docker exec ctr python2.7 -m pip install -r buildscripts/requirements.txt
 script:
-  - docker exec ctr python2.7 buildscripts/scons.py --prefix=/output core --disable-warnings-as-errors
+  - docker run --name ctr python2.7 buildscripts/scons.py --prefix=/output core --disable-warnings-as-errors
 after_success:
-  - docker exec ctr strip /output/bin/mongo
-  - docker exec ctr strip /output/bin/mongos
-  - docker exec ctr strip /output/binmongod
+  - docker run --name ctr strip /output/bin/mongo
+  - docker run --name ctr strip /output/bin/mongos
+  - docker run --name ctr strip /output/binmongod

@@ -17,7 +17,7 @@ jobs:
 services:
   - docker
 install:
-  - docker run -v ${PWD}:/sources -v ${PWD}:/output:Z -it ${OS_TYPE}:{OS_VERSION}
+  - docker run -v ${PWD}:/sources -v ${PWD}:/output:Z -it ${OS_TYPE}:{OS_VERSION} /bin/bash
   - dnf install gcc python27 boost-devel
   - sudo dnf groupinstall "Development Tools" "Development Libraries"
   - python2.7 -m ensurepip

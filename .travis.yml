@@ -1,9 +1,6 @@
 if: branch = v3.6
 language: cpp
 os: linux
-arch:
-  - arm64
-  - amd64
 cache:
   directories:
     - $TRAVIS_BUILD_DIR/build
@@ -14,17 +11,17 @@ stages:
 jobs:
   include:
     - stage: clean_cache
-      if: arch = arm64
+      arch: arm64
       env: OS_ARCH=arm64
       install: skip
       script: rm -rf $TRAVIS_BUILD_DIR/build/*
     - stage: clean_cache
-      if: arch = amd64
+      arch: amd64
       env: OS_ARCH=amd64
       install: skip
       script: rm -rf $TRAVIS_BUILD_DIR/build/*
     - stage: compile
-      if: arch = arm64
+      arch: arm64
       env: OS_ARCH=arm64
       script:
         - python2.7 buildscripts/scons.py --help
@@ -35,12 +32,14 @@ jobs:
 #      arch: arm64
 #      env: OS_TYPE=centos OS_VERSION=8 OS_ARCH=aarch64
     - stage: compile
-      if: arch = amd64
+      arch: amd64
       env: OS_ARCH=amd64
-      script: python2.7 buildscripts/scons.py -j16 all --release --disable-warnings-as-errors
-    - stage: test
-      install: skip
-      script: skip
+      script:
+        - python2.7 buildscripts/scons.py --help
+      #script: python2.7 buildscripts/scons.py -j16 all --release --disable-warnings-as-errors
+#    - stage: test
+#      install: skip
+#      script: skip
 #    - os: linux
 #      arch: amd64
 #      env: OS_TYPE=centos OS_VERSION=8 OS_ARCH=x86_64

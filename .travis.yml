@@ -24,7 +24,7 @@ jobs:
       arch: arm64
       env: OS_ARCH=arm64
       script:
-        - python2.7 buildscripts/scons.py --help
+        - python2.7 buildscripts/scons.py -h
         #- python2.7 buildscripts/scons.py -j8 mongod --release --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
         #- python2.7 buildscripts/scons.py -j8 mongos --release --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
         #- python2.7 buildscripts/scons.py -j8 mongo --release --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc

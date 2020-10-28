@@ -24,9 +24,21 @@ jobs:
       arch: arm64
       env: OS_ARCH=arm64
       script: python2.7 buildscripts/scons.py -j8 mongod --release --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
+    - stage: compile
+      arch: arm64
+      env: OS_ARCH=arm64
       script: python2.7 buildscripts/scons.py -j8 mongos --release --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
+    - stage: compile
+      arch: arm64
+      env: OS_ARCH=arm64
       script: python2.7 buildscripts/scons.py -j8 mongo --release --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
+    - stage: compile
+      arch: arm64
+      env: OS_ARCH=arm64
       script: python2.7 buildscripts/scons.py -j8 tests --release --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
+    - stage: compile
+      arch: arm64
+      env: OS_ARCH=arm64
       after_script: python2.7 buildscripts/scons.py -j8 all --release --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
 #    - os: linux
 #      arch: arm64
@@ -35,9 +47,21 @@ jobs:
       arch: amd64
       env: OS_ARCH=amd64
       script: python2.7 buildscripts/scons.py -j8 mongod --release --disable-warnings-as-errors
+    - stage: compile
+      arch: amd64
+      env: OS_ARCH=amd64
       script: python2.7 buildscripts/scons.py -j8 mongos --release --disable-warnings-as-errors
+    - stage: compile
+      arch: amd64
+      env: OS_ARCH=amd64
       script: python2.7 buildscripts/scons.py -j8 mongo --release --disable-warnings-as-errors
+    - stage: compile
+      arch: amd64
+      env: OS_ARCH=amd64
       script: python2.7 buildscripts/scons.py -j8 tests --release --disable-warnings-as-errors
+    - stage: compile
+      arch: amd64
+      env: OS_ARCH=amd64
       after_script: python2.7 buildscripts/scons.py -j8 all --release --disable-warnings-as-errors
 #    - stage: test
 #      install: skip

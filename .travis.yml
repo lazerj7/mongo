@@ -5,14 +5,14 @@ jobs:
     - os: linux
       arch: arm64
       env: OS_TYPE=fedora OS_VERSION=33 OS_ARCH=aarch64
-      script: python2.7 buildscripts/scons.py -j4 all --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
+      script: python2.7 buildscripts/scons.py -j16 all --release --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
 #    - os: linux
 #      arch: arm64
 #      env: OS_TYPE=centos OS_VERSION=8 OS_ARCH=aarch64
     - os: linux
       arch: amd64
       env: OS_TYPE=fedora OS_VERSION=33 OS_ARCH=x86_64
-      script: python2.7 buildscripts/scons.py -j4 all --disable-warnings-as-errors
+      script: python2.7 buildscripts/scons.py -j16 all --release --disable-warnings-as-errors
 #    - os: linux
 #      arch: amd64
 #      env: OS_TYPE=centos OS_VERSION=8 OS_ARCH=x86_64

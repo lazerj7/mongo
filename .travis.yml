@@ -17,14 +17,19 @@ jobs:
 services:
   - docker
 install:
-  - docker pull ${OS_TYPE}:${OS_VERSION}
-  - docker run -d -i --name ctr -v ${PWD}:/sources -v ${PWD}:/output:Z ${OS_TYPE}:${OS_VERSION} /bin/bash
-  - docker exec ctr dnf install -y gcc python27 boost-devel
-  - docker exec ctr dnf groupinstall -y development-libs development-tools
-  - docker exec ctr python2.7 -m ensurepip && docker exec ctr python2.7 -m pip install -r /sources/buildscripts/requirements.txt
+#  - docker pull ${OS_TYPE}:${OS_VERSION}
+#  - docker run -d -i --name ctr -v ${PWD}:/sources -v ${PWD}:/output:Z ${OS_TYPE}:${OS_VERSION} /bin/bash
+#  - docker exec ctr dnf install -y gcc python27 boost-devel
+  - sudo apt install build-essential
+  - sudo apt install pyton2.7 libboost-filesystem-dev libboost-program-options-dev libbost-system-dev libboost-thread-dev
+#  - docker exec ctr dnf groupinstall -y development-libs development-tools
+#  - docker exec ctr python2.7 -m ensurepip && docker exec ctr python2.7 -m pip install -r /sources/buildscripts/requirements.txt
+  - python2.7 -m ensurepip
+  - python2.7 -m pip install -r /buildscripts/requirements.txt
 script:
-  - docker exec ctr /bin/bash -c "cd /sources && python2.7 /sources/buildscripts/scons.py --prefix=/output core --disable-warnings-as-errors"
-after_success:
-  - docker exec ctr strip /output/bin/mongo
-  - docker exec ctr strip /output/bin/mongos
-  - docker exec ctr strip /output/binmongod
+#  - docker exec ctr /bin/bash -c "cd /sources && python2.7 /sources/buildscripts/scons.py --prefix=/output core --disable-warnings-as-errors"
+  - python2.7 buildscripts/scons.py -j4 all --disable-warnings-as-errors
+#after_success:
+#  - docker exec ctr strip /output/bin/mongo
+#  - docker exec ctr strip /output/bin/mongos
+#  - docker exec ctr strip /output/binmongod

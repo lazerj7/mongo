@@ -1,0 +1,30 @@
+if: branch = v3.6
+language: cpp
+jobs:
+  include:
+    - os: linux
+      arch: arm64
+      env: OS_TYPE=fedora OS_VERSION=33 OS_ARCH=aarch64
+    - os: linux
+      arch: arm64
+      env: OS_TYPE=centos OS_VERSION=8 OS_ARCH=aarch64
+    - os: linux
+      arch: amd64
+      env: OS_TYPE=fedora OS_VERSION=33 OS_ARCH=x86_64
+    - os: linux
+      arch: amd64
+      env: OS_TYPE=centos OS_VERSION=8 OS_ARCH=x86_64
+services:
+  - docker
+install:
+  - docker run -v ${PWD}:/sources -v ${PWD}:/output:Z -it ${OS_TYPE}:{OS_VERSION}
+  - dnf install gcc python27 boost-devel
+  - sudo dnf groupinstall "Development Tools" "Development Libraries"
+  - python2.7 -m ensurepip
+  - python2.7 -m pip install -r buildscripts/requirements.txt
+script:
+  - python2.7 buildscripts/scons.py --prefix=/output core --disable-warnings-as-errors
+after_success:
+  -strip /output/bin/mongo
+  -strip /output/bin/mongos
+  -strip /output/binmongod

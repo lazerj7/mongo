@@ -27,4 +27,4 @@ script:
 after_success:
   - docker exec ctr strip /output/bin/mongo
   - docker exec ctr strip /output/bin/mongos
-  -docker exec ctr strip /output/binmongod
+  - docker exec ctr strip /output/binmongod

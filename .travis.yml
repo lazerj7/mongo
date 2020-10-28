@@ -1,33 +1,55 @@
 if: branch = v3.6
 language: cpp
+os: linux
+arch:
+  - arm64
+  - amd64
+cache:
+  directories:
+    - $TRAVIS_BUILD_DIR/build
+stages:
+  - clean_cache
+  - get_dependencies
+  - compile
+  - test
 jobs:
   include:
-    - os: linux
-      arch: arm64
-      env: OS_TYPE=fedora OS_VERSION=33 OS_ARCH=aarch64
-      script: python2.7 buildscripts/scons.py -j16 all --release --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
+    - stage: clean_cache
+      script: rm -rf $TRAVIS_BUILD_DIR/build/*
+    - stage: get_dependencies
+      before_script: sudo apt update
+      script:
+        - sudo apt install build-essential
+        - sudo apt install python2.7 libpython2.7-dev python-pip libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev
+      after_script: python2.7 -m pip install -r buildscripts/requirements.txt
+    - stage: compile
+      if: arch = arm64
+      script:
+        - python2.7 buildscripts/scons.py --help
+        #- python2.7 buildscripts/scons.py -j8 mongod --release --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
+        #- python2.7 buildscripts/scons.py -j8 mongos --release --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
+        #- python2.7 buildscripts/scons.py -j8 mongo --release --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
 #    - os: linux
 #      arch: arm64
 #      env: OS_TYPE=centos OS_VERSION=8 OS_ARCH=aarch64
-    - os: linux
-      arch: amd64
-      env: OS_TYPE=fedora OS_VERSION=33 OS_ARCH=x86_64
+    - stage: compile
+      if: arch = amd64
       script: python2.7 buildscripts/scons.py -j16 all --release --disable-warnings-as-errors
 #    - os: linux
 #      arch: amd64
 #      env: OS_TYPE=centos OS_VERSION=8 OS_ARCH=x86_64
 #services:
 #  - docker
-install:
+#install:
 #  - docker pull ${OS_TYPE}:${OS_VERSION}
 #  - docker run -d -i --name ctr -v ${PWD}:/sources -v ${PWD}:/output:Z ${OS_TYPE}:${OS_VERSION} /bin/bash
 #  - docker exec ctr dnf install -y gcc python27 boost-devel
-  - sudo apt update
-  - sudo apt install build-essential
-  - sudo apt install python2.7 libpython2.7-dev python-pip libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev
+#  - sudo apt update
+#  - sudo apt install build-essential
+#  - sudo apt install python2.7 libpython2.7-dev python-pip libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev
 #  - docker exec ctr dnf groupinstall -y development-libs development-tools
 #  - docker exec ctr python2.7 -m ensurepip && docker exec ctr python2.7 -m pip install -r /sources/buildscripts/requirements.txt
-  - python2.7 -m pip install -r buildscripts/requirements.txt
+#  - python2.7 -m pip install -r buildscripts/requirements.txt
 #script:
 #  - docker exec ctr /bin/bash -c "cd /sources && python2.7 /sources/buildscripts/scons.py --prefix=/output core --disable-warnings-as-errors"
 #  - python2.7 buildscripts/scons.py -j4 all --disable-warnings-as-errors

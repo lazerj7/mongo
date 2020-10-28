@@ -18,8 +18,8 @@ services:
   - docker
 install:
   - docker pull ${OS_TYPE}:${OS_VERSION}
-  - docker run --name ctr -v ${PWD}:/sources -v ${PWD}:/output:Z ${OS_TYPE}:${OS_VERSION} dnf install gcc python27 boost-devel
-  - docker run --name ctr sudo dnf groupinstall "Development Tools" "Development Libraries"
+  - docker run --name ctr -v ${PWD}:/sources -v ${PWD}:/output:Z ${OS_TYPE}:${OS_VERSION} dnf install -y gcc python27 boost-devel
+  - docker run --name ctr sudo dnf groupinstall -y "Development Tools" "Development Libraries"
   - docker run --name ctr python2.7 -m ensurepip && docker exec ctr python2.7 -m pip install -r buildscripts/requirements.txt
 script:
   - docker run --name ctr python2.7 buildscripts/scons.py --prefix=/output core --disable-warnings-as-errors

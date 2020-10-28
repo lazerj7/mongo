@@ -24,7 +24,7 @@ install:
   - sudo apt install python2.7 python-pip libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev
 #  - docker exec ctr dnf groupinstall -y development-libs development-tools
 #  - docker exec ctr python2.7 -m ensurepip && docker exec ctr python2.7 -m pip install -r /sources/buildscripts/requirements.txt
-  - python2.7 -m pip install -r /buildscripts/requirements.txt
+  - python2.7 -m pip install -r buildscripts/requirements.txt
 script:
 #  - docker exec ctr /bin/bash -c "cd /sources && python2.7 /sources/buildscripts/scons.py --prefix=/output core --disable-warnings-as-errors"
   - python2.7 buildscripts/scons.py -j4 all --disable-warnings-as-errors

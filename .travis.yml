@@ -18,12 +18,13 @@ services:
   - docker
 install:
   - docker pull ${OS_TYPE}:${OS_VERSION}
-  - docker run --name ctr -v ${PWD}:/sources -v ${PWD}:/output:Z ${OS_TYPE}:${OS_VERSION} dnf install -y gcc python27 boost-devel
-  - docker run --name ctr sudo dnf groupinstall -y "Development Tools" "Development Libraries"
-  - docker run --name ctr python2.7 -m ensurepip && docker exec ctr python2.7 -m pip install -r buildscripts/requirements.txt
+  - docker run -d -i --name ctr -v ${PWD}:/sources -v ${PWD}:/output:Z ${OS_TYPE}:${OS_VERSION} /bin/bash
+  - docker exec ctr dnf install -y gcc python27 boost-devel
+  - docker exec ctr dnf groupinstall -y "Development Tools" "Development Libraries"
+  - docker exec ctr python2.7 -m ensurepip && docker exec ctr python2.7 -m pip install -r buildscripts/requirements.txt
 script:
-  - docker run --name ctr python2.7 buildscripts/scons.py --prefix=/output core --disable-warnings-as-errors
+  - docker exec ctr python2.7 buildscripts/scons.py --prefix=/output core --disable-warnings-as-errors
 after_success:
-  - docker run --name ctr strip /output/bin/mongo
-  - docker run --name ctr strip /output/bin/mongos
-  - docker run --name ctr strip /output/binmongod
+  - docker exec ctr strip /output/bin/mongo
+  - docker exec ctr strip /output/bin/mongos
+  - docker exec ctr strip /output/binmongod

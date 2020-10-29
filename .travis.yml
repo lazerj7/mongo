@@ -1,6 +1,7 @@
 if: branch = v3.6
 language: cpp
 os: linux
+dist: focal
 cache:
   directories:
     - $TRAVIS_BUILD_DIR/build

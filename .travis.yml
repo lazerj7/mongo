@@ -30,46 +30,46 @@ jobs:
     - stage: Compile Mongod
       arch: arm64
       env: OS_ARCH=arm64
-      script: python2.7 buildscripts/scons.py -j8 mongod --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
+      script: python2.7 buildscripts/scons.py -j16 mongod --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
     - stage: Compile Mongos
       arch: arm64
       env: OS_ARCH=arm64
-      script: python2.7 buildscripts/scons.py -j8 mongos --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
+      script: python2.7 buildscripts/scons.py -j16 mongos --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
     - stage: Compile Mongo
       arch: arm64
       env: OS_ARCH=arm64
-      script: python2.7 buildscripts/scons.py -j8 mongo --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
+      script: python2.7 buildscripts/scons.py -j16 mongo --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
     - stage: Compile Unit Tests
       arch: arm64
       env: OS_ARCH=arm64
-      script: python2.7 buildscripts/scons.py -j8 unittests --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
+      script: python2.7 buildscripts/scons.py -j16 unittests --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
     - stage: Compile DB Tests
       arch: arm64
       env: OS_ARCH=arm64
-      script: python2.7 buildscripts/scons.py -j8 dbtest --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
+      script: python2.7 buildscripts/scons.py -j16 dbtest --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
 #    - os: linux
 #      arch: arm64
 #      env: OS_TYPE=centos OS_VERSION=8 OS_ARCH=aarch64
     - stage: Compile Mongod
       arch: amd64
       env: OS_ARCH=amd64
-      script: python2.7 buildscripts/scons.py -j8 mongod --disable-warnings-as-errors
+      script: python2.7 buildscripts/scons.py -j12 mongod --disable-warnings-as-errors
     - stage: Compile Mongos
       arch: amd64
       env: OS_ARCH=amd64
-      script: python2.7 buildscripts/scons.py -j8 mongos --disable-warnings-as-errors
+      script: python2.7 buildscripts/scons.py -j12 mongos --disable-warnings-as-errors
     - stage: Compile Mongo
       arch: amd64
       env: OS_ARCH=amd64
-      script: python2.7 buildscripts/scons.py -j8 mongo --disable-warnings-as-errors
+      script: python2.7 buildscripts/scons.py -j12 mongo --disable-warnings-as-errors
     - stage: Compile Unit Tests
       arch: amd64
       env: OS_ARCH=amd64
-      script: python2.7 buildscripts/scons.py -j8 unittests --disable-warnings-as-errors
+      script: python2.7 buildscripts/scons.py -j12 unittests --disable-warnings-as-errors
     - stage: Compile DB Tests
       arch: amd64
       env: OS_ARCH=amd64
-      script: python2.7 buildscripts/scons.py -j8 dbtest --disable-warnings-as-errors
+      script: python2.7 buildscripts/scons.py -j12 dbtest --disable-warnings-as-errors
 #    - stage: test
 #      install: skip
 #      script: skip

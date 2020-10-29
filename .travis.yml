@@ -3,62 +3,73 @@ language: cpp
 os: linux
 dist: bionic
 cache:
+  pip: true
+  ccache: true
   directories:
     - $TRAVIS_BUILD_DIR/build
 stages:
-  - clean_cache
-  - compile_mongo
-  - compile_mongos
-  - compile_mongod
-  - compile_rest
+  - Clean Cache
+  - Compile Mongo
+  - Compile Mongos
+  - Compile Mongod
+  - Compile Unit Tests
+  - Compile DB Tests
   #- test
 jobs:
   include:
-    - stage: clean_cache
+    - stage: Clean Cache
       arch: arm64
       env: OS_ARCH=arm64
       install: skip
       script: rm -rf $TRAVIS_BUILD_DIR/build/*
-    - stage: clean_cache
+    - stage: Clean Cache
       arch: amd64
       env: OS_ARCH=amd64
       install: skip
       script: rm -rf $TRAVIS_BUILD_DIR/build/*
-    - stage: compile_mongod
+    - stage: Compile Mongod
       arch: arm64
       env: OS_ARCH=arm64
       script: python2.7 buildscripts/scons.py -j8 mongod --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
-    - stage: compile_mongos
+    - stage: Compile Mongos
       arch: arm64
       env: OS_ARCH=arm64
       script: python2.7 buildscripts/scons.py -j8 mongos --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
-    - stage: compile_mongo
+    - stage: Compile Mongo
       arch: arm64
       env: OS_ARCH=arm64
       script: python2.7 buildscripts/scons.py -j8 mongo --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
-    - stage: compile_rest
+    - stage: Compile Unit Tests
       arch: arm64
       env: OS_ARCH=arm64
-      script: python2.7 buildscripts/scons.py -j8 all --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
+      script: python2.7 buildscripts/scons.py -j8 unittests --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
+    - stage: Compile DB Tests
+      arch: arm64
+      env: OS_ARCH=arm64
+      script: python2.7 buildscripts/scons.py -j8 dbtest --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
 #    - os: linux
 #      arch: arm64
 #      env: OS_TYPE=centos OS_VERSION=8 OS_ARCH=aarch64
-    - stage: compile_mongod
+    - stage: Compile Mongod
       arch: amd64
       env: OS_ARCH=amd64
       script: python2.7 buildscripts/scons.py -j8 mongod --disable-warnings-as-errors
-    - stage: compile_mongos
+    - stage: Compile Mongos
       arch: amd64
       env: OS_ARCH=amd64
       script: python2.7 buildscripts/scons.py -j8 mongos --disable-warnings-as-errors
-    - stage: compile_mongo
+    - stage: Compile Mongo
       arch: amd64
       env: OS_ARCH=amd64
       script: python2.7 buildscripts/scons.py -j8 mongo --disable-warnings-as-errors
-    - stage: compile_rest
+    - stage: Compile Unit Tests
       arch: amd64
       env: OS_ARCH=amd64
-      after_script: python2.7 buildscripts/scons.py -j8 all --disable-warnings-as-errors
+      script: python2.7 buildscripts/scons.py -j8 unittests --disable-warnings-as-errors
+    - stage: Compile DB Tests
+      arch: amd64
+      env: OS_ARCH=amd64
+      script: python2.7 buildscripts/scons.py -j8 dbtest --disable-warnings-as-errors
 #    - stage: test
 #      install: skip
 #      script: skip

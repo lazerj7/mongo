@@ -68,6 +68,7 @@ jobs:
 #services:
 #  - docker
 install:
+  - sudo add-apt-repository universe
   - sudo apt update
   - sudo apt install build-essential
   - sudo apt install python2.7 libpython2.7-dev python-pip libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev

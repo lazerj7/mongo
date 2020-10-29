@@ -47,9 +47,6 @@ jobs:
       arch: arm64
       env: OS_ARCH=arm64
       script: python2.7 buildscripts/scons.py -j16 dbtest --disable-warnings-as-errors CCFLAGS=-march=armv8-a+crc
-#    - os: linux
-#      arch: arm64
-#      env: OS_TYPE=centos OS_VERSION=8 OS_ARCH=aarch64
     - stage: Compile Mongod
       arch: amd64
       env: OS_ARCH=amd64
@@ -73,9 +70,6 @@ jobs:
 #    - stage: test
 #      install: skip
 #      script: skip
-#    - os: linux
-#      arch: amd64
-#      env: OS_TYPE=centos OS_VERSION=8 OS_ARCH=x86_64
 #services:
 #  - docker
 install:
